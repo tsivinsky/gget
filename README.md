@@ -7,7 +7,8 @@ If there is a way to do it with a cURL, good but I didn't want to search for it 
 ## Install
 
 Requirements:
-  - Go installed
+
+- Go installed
 
 ```bash
 go install github.com/tsivinsky/gget@latest
@@ -24,3 +25,7 @@ If you want to use file as an output, you can add `-o` flag
 ```bash
 gget https://github.com/tsivinsky/gget/blob/master/main.go -o gget.go
 ```
+
+#### Tip
+
+If you won't provide a filename after -o flag, gget will save output with the same name as file on GitHub.

@@ -44,6 +44,14 @@ func main() {
 		fmt.Print(string(data))
 	} else {
 		// save to file
+		if outFilePath == "" {
+			// if user does not specify the file name for output, set it the same as file name on GitHub
+			urlSlice := strings.Split(url, "/")
+			outFilePath = urlSlice[len(urlSlice)-1]
+		}
+
+		log.Printf("outFilePath: %s\n", outFilePath)
+
 		f, err := os.OpenFile(outFilePath, os.O_CREATE|os.O_RDWR, 0644)
 		if err != nil {
 			log.Fatal(err)
@@ -54,12 +62,21 @@ func main() {
 	}
 }
 
-func getArgumentValue(arg string) (string, error) {
+func getArgumentValue(arg string) (value string, err error) {
 	args := os.Args[1:]
 
 	for i, val := range args {
 		if val == arg {
-			return args[i+1], nil
+			defer func() {
+				if err := recover(); err != nil {
+					value = ""
+					err = nil
+				}
+			}()
+
+			value = args[i+1]
+
+			return
 		}
 	}
 
