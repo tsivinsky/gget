@@ -50,7 +50,7 @@ func main() {
 			outFilePath = urlSlice[len(urlSlice)-1]
 		}
 
-		log.Printf("outFilePath: %s\n", outFilePath)
+		fmt.Printf("Saving file to %s\n", outFilePath)
 
 		f, err := os.OpenFile(outFilePath, os.O_CREATE|os.O_RDWR, 0644)
 		if err != nil {
