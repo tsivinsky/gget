@@ -1,11 +1,8 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -27,13 +24,7 @@ func main() {
 	url := strings.Replace(uri.Path, "blob/", "", 1)
 	url = fmt.Sprintf("https://raw.githubusercontent.com%s", url)
 
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := getFileData(url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,7 +32,7 @@ func main() {
 	outFilePath, err := getArgumentValue("-o")
 	if err != nil {
 		// print to stdout
-		fmt.Print(string(data))
+		fmt.Print(data)
 	} else {
 		// save to file
 		if outFilePath == "" {
@@ -52,33 +43,6 @@ func main() {
 
 		fmt.Printf("Saving file to %s\n", outFilePath)
 
-		f, err := os.OpenFile(outFilePath, os.O_CREATE|os.O_RDWR, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer f.Close()
-
-		f.Write(data)
+		saveOutputToFile(outFilePath, data)
 	}
-}
-
-func getArgumentValue(arg string) (value string, err error) {
-	args := os.Args[1:]
-
-	for i, val := range args {
-		if val == arg {
-			defer func() {
-				if err := recover(); err != nil {
-					value = ""
-					err = nil
-				}
-			}()
-
-			value = args[i+1]
-
-			return
-		}
-	}
-
-	return "", errors.New("No " + arg + " provided")
 }
