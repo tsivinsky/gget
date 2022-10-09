@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 )
@@ -13,7 +13,7 @@ func getFileData(fileUrl string) (string, error) {
 		return "", err
 	}
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -28,7 +28,10 @@ func saveOutputToFile(filePath string, output string) error {
 	}
 	defer f.Close()
 
-	f.WriteString(output)
+	_, err = f.WriteString(output)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

@@ -43,6 +43,9 @@ func main() {
 
 		fmt.Printf("Saving file to %s\n", outFilePath)
 
-		saveOutputToFile(outFilePath, data)
+		err := saveOutputToFile(outFilePath, data)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
