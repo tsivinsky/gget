@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -20,6 +21,10 @@ func main() {
 	flag.Parse()
 
 	urlPath := flag.Arg(0)
+
+	if urlPath == "" {
+		cli.ExitWithError(errors.New("Usage: gget https://github.com/$user/$repo/blob/$head/file"), 1)
+	}
 
 	gh, err := github.ParseURL(urlPath)
 	if err != nil {
