@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"io"
 	"os"
 	"path"
@@ -31,18 +30,6 @@ func main() {
 		cli.ExitWithError(err, 1)
 	}
 
-	if outFileName == "" {
-		fname := path.Base(gh.PathToFile)
-		outFileName = fname
-	}
-
-	cwd, err := os.Getwd()
-	if err != nil {
-		cli.ExitWithError(err, 1)
-	}
-
-	outFileName = path.Join(cwd, outFileName)
-
 	content, err := github.DownloadFile(*gh)
 	if err != nil {
 		cli.ExitWithError(err, 1)
@@ -50,17 +37,25 @@ func main() {
 
 	var w io.Writer
 
-	f, err := os.OpenFile(outFileName, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		cli.ExitWithError(err, 1)
+	if outFileName != "" {
+		cwd, err := os.Getwd()
+		if err != nil {
+			cli.ExitWithError(err, 1)
+		}
+		outFileName = path.Join(cwd, outFileName)
+
+		f, err := os.OpenFile(outFileName, os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			cli.ExitWithError(err, 1)
+		}
+		defer f.Close()
+		w = f
+	} else {
+		w = os.Stdout
 	}
-	defer f.Close()
-	w = f
 
 	_, err = w.Write(content)
 	if err != nil {
 		cli.ExitWithError(err, 1)
 	}
-
-	fmt.Printf("Saved file to %s\n", f.Name())
 }
