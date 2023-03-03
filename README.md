@@ -18,13 +18,13 @@ If you don't have Go installed, you can install binary from latest release on [g
 
 ## Usage
 
-By default, gget will save file with the name from GitHub.
+By default, gget will output file's content to stdout.
 
 ```bash
 gget https://github.com/tsivinsky/gget/blob/master/README.md
 ```
 
-But you can pass `-o path/to/file.txt` flag to change destination file.
+But you can pass `-o file.txt` flag to set destination file.
 
 ```bash
 gget -o file.txt https://github.com/tsivinsky/gget/blob/master/README.md
