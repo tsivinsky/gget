@@ -29,3 +29,17 @@ But you can pass `-o file.txt` flag to set destination file.
 ```bash
 gget -o file.txt https://github.com/tsivinsky/gget/blob/master/README.md
 ```
+
+If url has fragment with selected lines, gget will get only those lines
+
+Single line
+
+```bash
+gget https://github.com/tsivinsky/gget/blob/master/Makefile#L1
+```
+
+Range of lines
+
+```bash
+gget https://github.com/tsivinsky/gget/blob/master/Makefile#L1-L5
+```
