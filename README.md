@@ -18,14 +18,14 @@ If you don't have Go installed, you can install binary from latest release on [g
 
 ## Usage
 
-By default, gget will print file content to standard output.
-
-If you want to use file as an output, you can add `-o` flag
+By default, gget will save file with the name from GitHub.
 
 ```bash
-gget https://github.com/tsivinsky/gget/blob/master/main.go -o gget.go
+gget https://github.com/tsivinsky/gget/blob/master/README.md
 ```
 
-#### Tip
+But you can pass `-o path/to/file.txt` flag to change destination file.
 
-If you won't provide a filename after -o flag, gget will save output with the same name as file on GitHub.
+```bash
+gget -o file.txt https://github.com/tsivinsky/gget/blob/master/README.md
+```
